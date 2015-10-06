@@ -1,0 +1,6 @@
+{%- from "memcached/map.jinja" import server with context %}
+PORT="{{ server.bind.port }}"
+USER="memcached"
+MAXCONN="{{ server.maxconn }}"
+CACHESIZE="{{ server.cache_size }}"
+OPTIONS="-l {{ server.bind.address }}"
