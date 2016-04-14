@@ -1,2 +1,0 @@
-memcached/*             /usr/share/salt-formulas/env/memcached/
-metadata/service/*      /usr/share/salt-formulas/reclass/service/memcached/
