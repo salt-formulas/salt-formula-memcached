@@ -17,14 +17,14 @@ memcached_config:
 
 {%- if grains.get('virtual_subtype', None) == "Docker" %}
 
-memcached_service:
+memcached_entrypoint:
   file.managed:
   - name: /entrypoint.sh
   - template: jinja
   - source: salt://memcached/files/entrypoint.sh
   - mode: 755
 
-{%- else %}
+{%- endif %}
 
 memcached_service:
   service.running:
@@ -32,7 +32,5 @@ memcached_service:
   - name: {{ server.service }}
   - watch:
     - file: memcached_config
-
-{%- endif %}
 
 {%- endif %}
