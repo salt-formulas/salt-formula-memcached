@@ -1,0 +1,8 @@
+name: memcached
+os: Debian, RedHat
+os_family: Debian, RedHat
+version: 201606
+release: 1
+summary: Memcached Salt formula
+description: Install and configure Memcached server.
+top_level_dir: memcached
