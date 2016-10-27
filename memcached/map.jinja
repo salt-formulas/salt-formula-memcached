@@ -1,6 +1,6 @@
 {% set server = salt['grains.filter_by']({
     'Debian': {
-        'pkgs': ['memcached', 'python-memcache'],
+        'pkgs': ['memcached', 'python-memcache', 'python-pymemcache'],
         'service': 'memcached',
         'config': '/etc/memcached.conf',
         'config_template': 'salt://memcached/files/memcached.conf',
