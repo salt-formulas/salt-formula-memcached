@@ -1,0 +1,12 @@
+parameters:
+  memcached:
+    _support:
+      collectd:
+        enabled: true
+      heka:
+        enabled: false
+      sensu:
+        enabled: false
+      sphinx:
+        enabled: false
+
