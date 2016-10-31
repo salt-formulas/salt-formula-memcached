@@ -1,0 +1,5 @@
+orchestrate:
+  server:
+    priority: 170
+    batch: 1
+
