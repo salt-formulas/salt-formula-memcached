@@ -1,3 +1,3 @@
 dashboard:
   memcached:
-    template: memcached/files/Memcached.json
+    template: memcached/files/grafana_influxdb.json
