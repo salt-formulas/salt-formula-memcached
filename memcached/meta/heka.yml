@@ -1,0 +1,33 @@
+{%- from "memcached/map.jinja" import server with context %}
+{%- if server.get('enabled', False) %}
+metric_collector:
+  trigger:
+    memcached_check:
+      description: 'memcached cannot be checked'
+      severity: down
+      rules:
+      - metric: memcached_check
+        relational_operator: '=='
+        threshold: 0
+        window: 60
+        periods: 0
+        function: last
+  alarm:
+    memcached_check:
+      alerting: enabled
+      triggers:
+      - memcached_check
+      dimension:
+        service: memcached
+aggregator:
+  alarm_cluster:
+    memcached_check:
+      policy: majority_of_members
+      match:
+        service: memcached
+      group_by: hostname
+      members:
+      - memcached_check
+      dimension:
+        cluster_name: memcached
+{%- endif %}
