@@ -23,6 +23,7 @@ aggregator:
   alarm_cluster:
     memcached_check:
       policy: majority_of_members
+      alerting: enabled_with_notification
       match:
         service: memcached
       group_by: hostname
@@ -30,4 +31,5 @@ aggregator:
       - memcached_check
       dimension:
         cluster_name: memcached
+        nagios_host: 00-top-clusters
 {%- endif %}
