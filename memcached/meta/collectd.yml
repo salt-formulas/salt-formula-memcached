@@ -1,0 +1,13 @@
+{%- from "memcached/map.jinja" import server with context %}
+{%- if server.get('enabled', False) %}
+local_plugin:
+  memcached:
+    template: memcached/files/collectd_memcached.conf
+    host: {{ server.bind.address }}
+    port: {{ server.bind.port }}
+  memcached_check:
+    plugin: python
+    template: memcached/files/collectd_memcached_check.conf
+    host: {{ server.bind.address }}
+    port: {{ server.bind.port }}
+{%- endif %}

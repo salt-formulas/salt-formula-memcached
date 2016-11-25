@@ -1,5 +1,7 @@
 applications:
 - memcached
+classes:
+- service.memcached.support
 parameters:
   memcached:
     server:
