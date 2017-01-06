@@ -6,6 +6,12 @@ memcached_packages:
   pkg.installed:
   - names: {{ server.pkgs }}
 
+{%- if pillar.collectd is defined %}
+collectd_packages_for_memcached:
+  pkg.installed:
+  - names: {{ server.collectd_pkgs }}
+{%- endif %}
+
 memcached_config:
   file.managed:
   - name: {{ server.config }}
