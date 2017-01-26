@@ -2,3 +2,18 @@ dashboard:
   memcached:
     format: json
     template: memcached/files/grafana_dashboards/memcached_influxdb.json
+  main:
+    row:
+      ost-middleware:
+        title: Middleware
+        panel:
+          memcached:
+            title: Memcached
+            links:
+            - dashboard: Memcached
+              title: Memcached
+              type: dashboard
+            target:
+              cluster_status:
+                rawQuery: true
+                query: SELECT last(value) FROM cluster_status WHERE cluster_name = 'memcached' AND environment_label = '$environment' AND $timeFilter GROUP BY time($interval) fill(null)
