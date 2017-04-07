@@ -17,15 +17,15 @@
     ]
   },
   "editable": true,
+  "gnetId": null,
+  "graphTooltip": 1,
   "hideControls": false,
   "id": null,
   "links": [],
-  "originalTitle": "Memcached",
   "refresh": "1m",
   "rows": [
     {
       "collapse": false,
-      "editable": true,
       "height": "250px",
       "panels": [
         {
@@ -38,6 +38,7 @@
             "rgba(225, 40, 40, 0.59)"
           ],
           "datasource": null,
+          "description": "Overall status of the memcached cluster",
           "editable": true,
           "error": false,
           "format": "none",
@@ -51,6 +52,17 @@
           "id": 9,
           "interval": "> 60s",
           "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
           "maxDataPoints": 100,
           "nullPointMode": "connected",
           "nullText": null,
@@ -58,7 +70,14 @@
           "postfixFontSize": "50%",
           "prefix": "",
           "prefixFontSize": "50%",
-          "span": 3,
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "span": 2,
           "sparkline": {
             "fillColor": "rgba(31, 118, 189, 0.18)",
             "full": false,
@@ -72,26 +91,13 @@
               "dsType": "influxdb",
               "fill": "",
               "function": "last",
-              "groupBy": [
-                {
-                  "params": [
-                    "$interval"
-                  ],
-                  "type": "time"
-                },
-                {
-                  "params": [
-                    "null"
-                  ],
-                  "type": "fill"
-                }
-              ],
+              "groupBy": [],
               "groupByTags": [],
               "groupby_field": "",
               "interval": "",
               "measurement": "cluster_status",
               "policy": "default",
-              "query": "SELECT last(\"value\") FROM \"cluster_status\" WHERE \"environment_label\" =~ /^$environment$/ AND \"cluster_name\" = 'memcached' AND $timeFilter GROUP BY time($interval) fill(null)",
+              "query": "SELECT last(\"value\") FROM \"cluster_status\" WHERE \"environment_label\" = '$environment' AND \"cluster_name\" = 'memcached' AND $timeFilter",
               "rawQuery": false,
               "refId": "A",
               "resultFormat": "time_series",
@@ -160,20 +166,28 @@
             }
           ],
           "valueName": "current"
-        },
+        }
+      ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Row1",
+      "titleSize": "h6"
+    },
+    {
+      "collapse": false,
+      "height": "250px",
+      "panels": [
         {
           "aliasColors": {},
           "bars": false,
           "datasource": null,
+          "description": "Total number of stored items",
           "editable": true,
           "error": false,
           "fill": 0,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 1,
           "interval": ">1m",
           "legend": {
@@ -198,7 +212,7 @@
               "alias": "/items/"
             }
           ],
-          "span": 6,
+          "span": 4,
           "stack": false,
           "steppedLine": false,
           "targets": [
@@ -253,21 +267,32 @@
                   "key": "environment_label",
                   "operator": "=",
                   "value": "$environment"
+                },
+                {
+                  "condition": "AND",
+                  "key": "hostname",
+                  "operator": "=~",
+                  "value": "/^$server$/"
                 }
               ]
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "Items",
           "tooltip": {
             "msResolution": false,
             "shared": true,
+            "sort": 0,
             "value_type": "individual"
           },
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -291,15 +316,11 @@
           "aliasColors": {},
           "bars": false,
           "datasource": null,
+          "description": "Total amount of memory used by the stored items",
           "editable": true,
           "error": false,
           "fill": 0,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 2,
           "interval": ">1m",
           "legend": {
@@ -320,7 +341,7 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
-          "span": 3,
+          "span": 4,
           "stack": false,
           "steppedLine": false,
           "targets": [
@@ -375,217 +396,43 @@
                   "key": "environment_label",
                   "operator": "=",
                   "value": "$environment"
+                },
+                {
+                  "condition": "AND",
+                  "key": "hostname",
+                  "operator": "=~",
+                  "value": "/^$server$/"
                 }
               ]
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "Cache used",
           "tooltip": {
             "msResolution": false,
             "shared": true,
+            "sort": 0,
             "value_type": "cumulative"
           },
           "type": "graph",
           "xaxis": {
-            "show": true
-          },
-          "yaxes": [
-            {
-              "format": "bytes",
-              "logBase": 1,
-              "max": null,
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "bytes",
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ]
-        }
-      ],
-      "title": "Row1"
-    },
-    {
-      "collapse": false,
-      "editable": true,
-      "height": "250px",
-      "panels": [
-        {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": null,
-          "editable": true,
-          "error": false,
-          "fill": 0,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
-          "id": 3,
-          "interval": ">1m",
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
+            "mode": "time",
+            "name": null,
             "show": true,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "connected",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 6,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "alias": "$tag_hostname.get",
-              "column": "value",
-              "dsType": "influxdb",
-              "function": "mean",
-              "groupBy": [
-                {
-                  "interval": "auto",
-                  "params": [
-                    "auto"
-                  ],
-                  "type": "time"
-                },
-                {
-                  "params": [
-                    "hostname"
-                  ],
-                  "type": "tag"
-                },
-                {
-                  "params": [
-                    "previous"
-                  ],
-                  "type": "fill"
-                }
-              ],
-              "measurement": "memcached_command_get",
-              "policy": "default",
-              "query": "SELECT mean(\"value\") FROM \"memcached_command_get\" WHERE \"environment_label\" =~ /^$environment$/ AND $timeFilter GROUP BY time($interval), \"hostname\" fill(previous)",
-              "rawQuery": false,
-              "refId": "A",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "value"
-                    ],
-                    "type": "field"
-                  },
-                  {
-                    "params": [],
-                    "type": "mean"
-                  }
-                ]
-              ],
-              "tags": [
-                {
-                  "key": "environment_label",
-                  "operator": "=",
-                  "value": "$environment"
-                }
-              ]
-            },
-            {
-              "alias": "$tag_hostname.set",
-              "column": "value",
-              "dsType": "influxdb",
-              "function": "mean",
-              "groupBy": [
-                {
-                  "interval": "auto",
-                  "params": [
-                    "auto"
-                  ],
-                  "type": "time"
-                },
-                {
-                  "params": [
-                    "hostname"
-                  ],
-                  "type": "tag"
-                },
-                {
-                  "params": [
-                    "previous"
-                  ],
-                  "type": "fill"
-                }
-              ],
-              "hide": false,
-              "measurement": "memcached_command_set",
-              "policy": "default",
-              "query": "SELECT mean(\"value\") FROM \"memcached_command_set\" WHERE \"environment_label\" =~ /^$environment$/ AND $timeFilter GROUP BY time($interval), \"hostname\" fill(previous)",
-              "rawQuery": false,
-              "refId": "B",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "value"
-                    ],
-                    "type": "field"
-                  },
-                  {
-                    "params": [],
-                    "type": "mean"
-                  }
-                ]
-              ],
-              "tags": [
-                {
-                  "key": "environment_label",
-                  "operator": "=",
-                  "value": "$environment"
-                }
-              ]
-            }
-          ],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Get/Set rates",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "value_type": "cumulative"
-          },
-          "type": "graph",
-          "xaxis": {
-            "show": true
+            "values": []
           },
           "yaxes": [
             {
-              "format": "short",
-              "label": "per second",
+              "format": "bytes",
               "logBase": 1,
               "max": null,
               "min": 0,
               "show": true
             },
             {
-              "format": "short",
+              "format": "bytes",
               "logBase": 1,
               "max": null,
               "min": null,
@@ -597,15 +444,11 @@
           "aliasColors": {},
           "bars": false,
           "datasource": null,
+          "description": "Total amount of memory left for storing items",
           "editable": true,
           "error": false,
           "fill": 0,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 8,
           "interval": ">1m",
           "legend": {
@@ -626,7 +469,7 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
-          "span": 6,
+          "span": 4,
           "stack": false,
           "steppedLine": false,
           "targets": [
@@ -681,21 +524,32 @@
                   "key": "environment_label",
                   "operator": "=",
                   "value": "$environment"
+                },
+                {
+                  "condition": "AND",
+                  "key": "hostname",
+                  "operator": "=~",
+                  "value": "/^$server$/"
                 }
               ]
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "Cache free",
           "tooltip": {
             "msResolution": false,
             "shared": true,
+            "sort": 0,
             "value_type": "cumulative"
           },
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -715,11 +569,15 @@
           ]
         }
       ],
-      "title": "New row"
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": true,
+      "title": "Memory",
+      "titleSize": "h6"
     },
     {
       "collapse": false,
-      "editable": true,
       "height": "250px",
       "panels": [
         {
@@ -729,15 +587,11 @@
           },
           "bars": false,
           "datasource": null,
+          "description": "Percentage of items found in the cache",
           "editable": true,
           "error": false,
           "fill": 0,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 6,
           "interval": ">60s",
           "legend": {
@@ -773,7 +627,7 @@
               "lines": false
             }
           ],
-          "span": 6,
+          "span": 4,
           "stack": false,
           "steppedLine": false,
           "targets": [
@@ -829,22 +683,33 @@
                   "key": "environment_label",
                   "operator": "=",
                   "value": "$environment"
+                },
+                {
+                  "condition": "AND",
+                  "key": "hostname",
+                  "operator": "=~",
+                  "value": "/^$server$/"
                 }
               ],
               "target": ""
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "Hits ratio",
           "tooltip": {
             "msResolution": false,
             "shared": true,
+            "sort": 0,
             "value_type": "cumulative"
           },
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -870,15 +735,11 @@
           },
           "bars": false,
           "datasource": null,
+          "description": "The number of items/sec that have been found, missed and evicted",
           "editable": true,
           "error": false,
           "fill": 0,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 5,
           "interval": ">1m",
           "legend": {
@@ -898,18 +759,13 @@
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
-          "seriesOverrides": [
-            {
-              "alias": "/evictions/",
-              "yaxis": 2
-            }
-          ],
-          "span": 6,
+          "seriesOverrides": [],
+          "span": 4,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "alias": "$tag_hostname.hits",
+              "alias": "hits ($tag_hostname)",
               "column": "value",
               "dsType": "influxdb",
               "function": "mean",
@@ -961,11 +817,17 @@
                   "key": "environment_label",
                   "operator": "=",
                   "value": "$environment"
+                },
+                {
+                  "condition": "AND",
+                  "key": "hostname",
+                  "operator": "=~",
+                  "value": "/^$server$/"
                 }
               ]
             },
             {
-              "alias": "$tag_hostname.misses",
+              "alias": "misses ($tag_hostname)",
               "column": "value",
               "dsType": "influxdb",
               "function": "mean",
@@ -1017,11 +879,17 @@
                   "key": "environment_label",
                   "operator": "=",
                   "value": "$environment"
+                },
+                {
+                  "condition": "AND",
+                  "key": "hostname",
+                  "operator": "=~",
+                  "value": "/^$server$/"
                 }
               ]
             },
             {
-              "alias": "$tag_hostname.evictions",
+              "alias": "evictions ($tag_hostname)",
               "column": "value",
               "dsType": "influxdb",
               "function": "mean",
@@ -1071,27 +939,228 @@
                   "key": "environment_label",
                   "operator": "=",
                   "value": "$environment"
+                },
+                {
+                  "condition": "AND",
+                  "key": "hostname",
+                  "operator": "=~",
+                  "value": "/^$server$/"
                 }
               ],
               "target": ""
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "Cache hits stats",
           "tooltip": {
             "msResolution": false,
             "shared": true,
+            "sort": 0,
             "value_type": "cumulative"
           },
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
-              "format": "short",
-              "label": "per second",
+              "format": "ops",
+              "label": "",
+              "logBase": 1,
+              "max": null,
+              "min": 0,
+              "show": true
+            },
+            {
+              "format": "ops",
+              "logBase": 1,
+              "max": null,
+              "min": 0,
+              "show": true
+            }
+          ]
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": null,
+          "description": "The number of set and get operations per second",
+          "editable": true,
+          "error": false,
+          "fill": 0,
+          "grid": {},
+          "id": 3,
+          "interval": ">1m",
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 4,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "alias": "get ($tag_hostname)",
+              "column": "value",
+              "dsType": "influxdb",
+              "function": "mean",
+              "groupBy": [
+                {
+                  "interval": "auto",
+                  "params": [
+                    "auto"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "hostname"
+                  ],
+                  "type": "tag"
+                },
+                {
+                  "params": [
+                    "previous"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "measurement": "memcached_command_get",
+              "policy": "default",
+              "query": "SELECT mean(\"value\") FROM \"memcached_command_get\" WHERE \"environment_label\" =~ /^$environment$/ AND $timeFilter GROUP BY time($interval), \"hostname\" fill(previous)",
+              "rawQuery": false,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "mean"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "environment_label",
+                  "operator": "=",
+                  "value": "$environment"
+                },
+                {
+                  "condition": "AND",
+                  "key": "hostname",
+                  "operator": "=~",
+                  "value": "/^$server$/"
+                }
+              ]
+            },
+            {
+              "alias": "set ($tag_hostname)",
+              "column": "value",
+              "dsType": "influxdb",
+              "function": "mean",
+              "groupBy": [
+                {
+                  "interval": "auto",
+                  "params": [
+                    "auto"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "hostname"
+                  ],
+                  "type": "tag"
+                },
+                {
+                  "params": [
+                    "previous"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "memcached_command_set",
+              "policy": "default",
+              "query": "SELECT mean(\"value\") FROM \"memcached_command_set\" WHERE \"environment_label\" =~ /^$environment$/ AND $timeFilter GROUP BY time($interval), \"hostname\" fill(previous)",
+              "rawQuery": false,
+              "refId": "B",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "mean"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "environment_label",
+                  "operator": "=",
+                  "value": "$environment"
+                },
+                {
+                  "condition": "AND",
+                  "key": "hostname",
+                  "operator": "=~",
+                  "value": "/^$server$/"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Get/Set rates",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "cumulative"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "ops",
+              "label": "",
               "logBase": 1,
               "max": null,
               "min": 0,
@@ -1101,32 +1170,32 @@
               "format": "short",
               "logBase": 1,
               "max": null,
-              "min": 0,
+              "min": null,
               "show": true
             }
           ]
         }
       ],
-      "title": "New row"
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": true,
+      "title": "Cache statistics",
+      "titleSize": "h6"
     },
     {
       "collapse": false,
-      "editable": true,
-      "height": "450px",
+      "height": "250px",
       "panels": [
         {
           "aliasColors": {},
           "bars": false,
           "datasource": null,
+          "description": "The number of bytes/second received and transmitted by memcached",
           "editable": true,
           "error": false,
           "fill": 0,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 7,
           "interval": ">60s",
           "legend": {
@@ -1163,7 +1232,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "alias": "$tag_hostname.tx",
+              "alias": "tx ($tag_hostname)",
               "column": "value",
               "dsType": "influxdb",
               "function": "mean",
@@ -1214,11 +1283,17 @@
                   "key": "environment_label",
                   "operator": "=",
                   "value": "$environment"
+                },
+                {
+                  "condition": "AND",
+                  "key": "hostname",
+                  "operator": "=~",
+                  "value": "/^$server$/"
                 }
               ]
             },
             {
-              "alias": "$tag_hostname.rx",
+              "alias": "rx ($tag_hostname)",
               "column": "value",
               "dsType": "influxdb",
               "function": "mean",
@@ -1269,28 +1344,40 @@
                   "key": "environment_label",
                   "operator": "=",
                   "value": "$environment"
+                },
+                {
+                  "condition": "AND",
+                  "key": "hostname",
+                  "operator": "=~",
+                  "value": "/^$server$/"
                 }
               ]
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "Network I/O",
           "tooltip": {
             "msResolution": false,
             "shared": true,
+            "sort": 0,
             "value_type": "cumulative"
           },
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
               "format": "Bps",
+              "label": "",
               "logBase": 1,
               "max": null,
-              "min": null,
+              "min": "0",
               "show": true
             },
             {
@@ -1310,15 +1397,11 @@
           },
           "bars": false,
           "datasource": null,
+          "description": "The number of client connections",
           "editable": true,
           "error": false,
           "fill": 0,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 4,
           "interval": ">1m",
           "legend": {
@@ -1395,28 +1478,39 @@
                   "key": "environment_label",
                   "operator": "=",
                   "value": "$environment"
+                },
+                {
+                  "condition": "AND",
+                  "key": "hostname",
+                  "operator": "=~",
+                  "value": "/^$server$/"
                 }
               ]
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "Connections",
           "tooltip": {
             "msResolution": false,
             "shared": true,
+            "sort": 0,
             "value_type": "individual"
           },
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
               "format": "short",
               "logBase": 1,
               "max": null,
-              "min": null,
+              "min": "0",
               "show": true
             },
             {
@@ -1429,10 +1523,15 @@
           ]
         }
       ],
-      "title": "New row"
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": true,
+      "title": "Network",
+      "titleSize": "h6"
     }
   ],
-  "schemaVersion": 12,
+  "schemaVersion": 14,
   "sharedCrosshair": true,
   "style": "dark",
   "tags": [],
@@ -1440,17 +1539,46 @@
     "list": [
       {
         "allFormat": "regex values",
+        "allValue": null,
         "current": {},
         "datasource": null,
         "hide": 0,
         "includeAll": false,
+        "label": null,
+        "multi": false,
         "name": "environment",
         "options": [],
         "query": "show tag values from cpu_idle with key = environment_label",
         "refresh": 1,
         "refresh_on_load": true,
         "regex": "",
-        "type": "query"
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "lma",
+        "hide": 0,
+        "includeAll": true,
+        "label": null,
+        "multi": true,
+        "name": "server",
+        "options": [],
+        "query": "show tag values from memcached_check with key = \"hostname\" where environment_label =~ /^$environment$/",
+        "refresh": 1,
+        "refresh_on_load": true,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
       }
     ]
   },
@@ -1491,5 +1619,5 @@
   },
   "timezone": "browser",
   "title": "Memcached",
-  "version": 2
+  "version": 28
 }
