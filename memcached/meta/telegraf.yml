@@ -1,0 +1,13 @@
+{%- from "memcached/map.jinja" import server with context %}
+{%- if server.get('enabled', False) %}
+agent:
+  input:
+    procstat:
+      process:
+        memcached:
+          exe: memcached
+    memcached:
+      servers:
+        - address: {{ server.bind.address | replace("0.0.0.0", "127.0.0.1") }}
+          port: {{ server.bind.port }}
+{%- endif %}
