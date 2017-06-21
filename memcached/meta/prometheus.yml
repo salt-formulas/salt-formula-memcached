@@ -1,0 +1,16 @@
+{%- from "memcached/map.jinja" import server with context %}
+{%- if server.get('enabled', False) %}
+server:
+  alert:
+    ProcstatRunningMemcached:
+      if: >-
+        procstat_running{process_name="memcached"} == 0
+      {% raw %}
+      labels:
+        severity: warning
+        service: memcached
+      annotations:
+        summary: 'Memcached service is down'
+        description: 'Memcached service is down on node {{ $labels.host }}'
+      {% endraw %}
+{%- endif %}
