@@ -1,5 +1,10 @@
 dashboard:
-  memcached:
+  memcached_prometheus:
+    datasource: prometheus
+    format: json
+    template: memcached/files/grafana_dashboards/memcached_prometheus.json
+  memcached_influxdb:
+    datasource: influxdb
     format: json
     template: memcached/files/grafana_dashboards/memcached_influxdb.json
   main:
