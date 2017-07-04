@@ -8,6 +8,7 @@ dashboard:
     format: json
     template: memcached/files/grafana_dashboards/memcached_influxdb.json
   main:
+    datasource: influxdb
     row:
       ost-middleware:
         title: Middleware
