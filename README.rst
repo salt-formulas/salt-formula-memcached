@@ -1,57 +1,15 @@
-======================
-Memcached cache server
-======================
 
-Install and configure Memcached server
+=================
+Memcached Formula
+=================
 
-Available states
-================
-
-.. contents::
-    :local:
-
-``memcached.server``
---------------------
-
-Setup Memcached server
-
-Available metadata
-==================
-
-.. contents::
-    :local:
-
-``metadata.memcached.server.single``
-------------------------------------
-
-Single memcached server
-
-``metadata.memcached.server.local``
------------------------------------
-
-Memcached server listening on localhost only
-
-Configuration parameters
-========================
+Memcached is an in-memory key-value store for small chunks of arbitrary data
+(strings, objects) from results of database calls, API calls, or page
+rendering.
 
 
-Example reclass
+Sample Metadata
 ===============
-
-Single node memcached service, default parameters but modified cache size.
-
-.. code-block:: yaml
-
-   classes:
-   - service.memcached.server.single
-
-   parameters:
-    memcached:
-      server:
-        cache_size: 64
-
-Sample pillar
-=============
 
 .. code-block:: yaml
 
@@ -64,10 +22,12 @@ Sample pillar
           port: 11211
           protocol: tcp
 
-Read more
-=========
+
+References
+==========
 
 * http://memcached.org/
+
 
 Documentation and Bugs
 ======================
