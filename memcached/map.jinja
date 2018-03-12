@@ -8,6 +8,7 @@
         'cache_size': 64,
         'incomming_connections': 8192,
         'threads': 1,
+        'slabsize': '1m',
     },
     'RedHat': {
         'pkgs': ['memcached'],
@@ -17,5 +18,6 @@
         'cache_size': 64,
         'incomming_connections': 8192,
         'threads': 1,
+        'slabsize': '1m',
     },
 }, merge=salt['pillar.get']('memcached:server')) %}

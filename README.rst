@@ -17,6 +17,7 @@ Sample Metadata
       server:
         enabled: true
         cache_size: 64
+        slabsize: 1m
         bind:
           address: 0.0.0.0
           port: 11211
