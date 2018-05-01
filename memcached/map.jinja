@@ -21,3 +21,13 @@
         'slabsize': '1m',
     },
 }, merge=salt['pillar.get']('memcached:server')) %}
+
+{%- set monitoring = salt['grains.filter_by']({
+  'default': {
+    'service_evictions_threshold': 10,
+    'service_conn_yield_treshold': 5,
+    'service_respawn_seconds_treshold': 180,
+  },
+}, grain='os_family', merge=salt['pillar.get']('memcached:monitoring')) %}
+
+

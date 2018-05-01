@@ -1,16 +1,77 @@
-{%- from "memcached/map.jinja" import server with context %}
+{%- from "memcached/map.jinja" import server, monitoring with context %}
 {%- if server.get('enabled', False) %}
 server:
   alert:
-    MemcachedProcessDown:
+{%- raw %}
+    MemcachedServiceDown:
       if: >-
-        procstat_running{process_name="memcached"} == 0
-      {% raw %}
+        memcached_up == 0
+      labels:
+        severity: minor
+        service: memcached
+      annotations:
+        summary: "Memcached service is down"
+        description: "The Memcached service on the {{ $labels.host }} node is down."
+    MemcachedRespawnMinor:
+      if: >-
+{%- endraw %}
+        memcached_uptime < {{ monitoring.service_respawn_seconds_treshold }}
+{%- raw %}
       labels:
         severity: warning
         service: memcached
       annotations:
-        summary: 'Memcached service is down'
-        description: 'Memcached service is down on node {{ $labels.host }}'
-      {% endraw %}
+        summary: "Memcached is respawned"
+        description: "The Memcached service on the {{ $labels.host }} node was respawned."
+    MemcachedConnectionThrottled:
+      if: >-
+{%- endraw %}
+        increase(memcached_conn_yields[1m]) > {{ monitoring.service_conn_yield_treshold }}
+{%- raw %}
+      for: 2m
+      labels:
+        severity: warning
+        service: memcached
+      annotations:
+        summary: "{%- endraw %} {{ monitoring.service_conn_yield_treshold }}{%- raw %} throttled Memcached connections"
+        description: "An average of {{ $value }} client connections to the Memcached service on the {{ $labels.host }} node throttle for at least 2 minutes."
+    MemcachedConnectionsNoneMinor:
+      if: >-
+        memcached_curr_connections == 0
+      labels:
+        severity: minor
+        service: memcached
+      annotations:
+        summary: "Memcached has no open connections"
+        description: "The Memcached service on the {{ $labels.host }} node has no open connections."
+    MemcachedConnectionsNoneMajor:
+      if: >-
+        count(memcached_curr_connections == 0) == count(memcached_up)
+      labels:
+        severity: major
+        service: memcached
+      annotations:
+        summary: "Memcached has no open connections on all nodes"
+        description: "The Memcached service has no open connections on all nodes."
+    MemcachedItemsNoneMinor:
+      if: >-
+        memcached_curr_items == 0
+      labels:
+        severity: minor
+        service: memcached
+      annotations:
+        summary: "Memcached is empty"
+        description: "The Memcached service storage on the {{ $labels.host }} node has no entry."
+    MemcachedEvictionsLimit:
+{%- endraw %}
+      if: >-
+        increase(memcached_evictions[1m]) > {{ monitoring.service_evictions_threshold }}
+{%- raw %}
+      labels:
+        severity: warning
+        service: memcached
+      annotations:
+        summary: "{%- endraw %}{{ monitoring.service_evictions_threshold }}{%- raw %} evictions"
+        description: "An average of {{ $value }} evictions occurred on the {{ $labels.host }} node during the last minute."
+{%- endraw %}
 {%- endif %}
