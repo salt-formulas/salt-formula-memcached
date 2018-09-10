@@ -39,5 +39,5 @@ suites:
   - name: memcached_server
     provisioner:
       pillars-from-files:
-        memcached.sls: tests/pillar/memcached_server.sls
+        memcached.sls: tests/pillar/server.sls
 # vim: ft=yaml sw=2 ts=2 sts=2 tw=125

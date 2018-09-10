@@ -1,0 +1,43 @@
+title: Memcached server role
+description: |
+  Memcached service, server role.
+type: object
+additionalProperties: false
+
+required:
+  - enabled
+  - bind
+
+properties:
+  enabled:
+    description: |
+      Enables Memcached server service.
+    type: boolean
+  cache_size:
+    description: |
+      Size for cache, tells memcached how much RAM to use for item storage (in megabytes).
+    type: integer
+  slabsize:
+    description: |
+      Set size of each slab page.
+    type: string
+    example: "1m | 512k"
+  threads:
+    description: |
+      Number of threads to use to process incoming requests.
+    type: integer
+  bind:
+    description: |
+      Binding options for Memcached service.
+    type: object
+    additionalProperties: false
+    required: [address, port]
+    properties:
+      address:
+        description: |
+          IP address to listen on.
+        type: string
+      port:
+        description: |
+          Connection port to use.
+        type: integer
