@@ -6,7 +6,6 @@ additionalProperties: false
 
 required:
   - enabled
-  - bind
 
 properties:
   enabled:
