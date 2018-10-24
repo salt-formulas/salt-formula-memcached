@@ -30,7 +30,7 @@ properties:
       Binding options for Memcached service.
     type: object
     additionalProperties: false
-    required: [address, port]
+    required: [address, port, proto]
     properties:
       address:
         description: |
@@ -40,3 +40,8 @@ properties:
         description: |
           Connection port to use.
         type: integer
+      proto:
+        description: |
+          Listen on TCP/UDP port.
+        type: object
+        additionalProperties: true

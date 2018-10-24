@@ -7,3 +7,8 @@ memcached:
     bind:
       address: 0.0.0.0
       port: 11211
+      proto:
+        tcp:
+          enabled: True
+        udp:
+          enabled: True

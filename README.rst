@@ -22,6 +22,33 @@ Sample Metadata
           port: 11211
           protocol: tcp
 
+Enable/Disable tcp/udp listener
+===============================
+
+.. code-block:: yaml
+
+    memcached:
+      server:
+        enabled: true
+        cache_size: 64
+        slabsize: 2m
+        threads: 1
+        bind:
+          address: 0.0.0.0
+          port: 11211
+          proto:
+            tcp:
+              enabled: True
+            udp:
+              enabled: True
+======
+ Note:
+======
+ The following pillar option is deprecated and does not affect any functionality:
+================================================================================
+.. code-block:: yaml
+       bind:
+         protocol: tcp
 
 References
 ==========
